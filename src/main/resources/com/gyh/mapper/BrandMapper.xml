@@ -8,4 +8,6 @@
         <result property="brandName" column="brand_name" />
         <result property="companyName" column="company_name" />
     </resultMap>
+
 </mapper>
+

@@ -17,4 +17,14 @@ public interface BrandService {
      * @param brand
      */
     void add(Brand brand);
+
+    /*
+    *更新数据
+    * */
+    void update(Brand brand);
+
+    /*
+    *删除数据
+    * */
+    void delete(int id);
 }
