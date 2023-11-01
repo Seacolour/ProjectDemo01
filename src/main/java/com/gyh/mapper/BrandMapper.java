@@ -35,4 +35,9 @@ public interface BrandMapper {
     @Delete("delete from tb_brand where id = #{id}")
     void delete(int id);
 
+    /*
+    * 批量删除
+    * */
+    void deleteByIds(@Param("ids")int[] ids);
+
 }

@@ -74,4 +74,22 @@ public class BrandServlet extends BaseServlet {
         response.getWriter().write("success");
 
     }
+
+    public void deleteByIds(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        //1. 接收品牌数据
+        BufferedReader br = request.getReader();
+        String params = br.readLine();//json字符串
+
+        //转为Brand对象
+        int[] ids = JSON.parseObject(params, int[].class);
+
+        //2. 调用service添加
+        brandService.deleteByIds(ids);
+
+        //3. 响应成功的标识
+        response.getWriter().write("success");
+
+    }
+
 }
