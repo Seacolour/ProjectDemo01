@@ -2,6 +2,7 @@ package com.gyh.service.impl;
 
 import com.gyh.mapper.BrandMapper;
 import com.gyh.pojo.Brand;
+import com.gyh.pojo.PageBean;
 import com.gyh.service.BrandService;
 import com.gyh.util.SqlSessionFactoryUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -76,5 +77,67 @@ public class BrandServiceImpl implements BrandService {
         //5. 释放资源
         sqlSession.close();
 
+    }
+
+    @Override
+    public PageBean<Brand> selectByPage(int currentPage, int pageSize) {
+        //2. 获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //3. 获取BrandMapper
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        //4.开始索引
+        int begin=(currentPage-1)*pageSize;
+        //计算查询条目数
+        int size=pageSize;
+        //查询当前也数据
+        List<Brand> rows=mapper.selectByPage(begin, size);
+        //查询总记录数
+        int totalCount= mapper.selectTotalCount();
+
+        PageBean<Brand> pageBean=new PageBean<>();
+        pageBean.setRows(rows);
+        pageBean.setTotalCount(totalCount);
+
+        //5. 释放资源
+        sqlSession.close();
+
+        return pageBean;
+    }
+
+    @Override
+    public PageBean<Brand> selectByPageAndCondition(int currentPage, int pageSize, Brand brand) {
+        //2. 获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //3. 获取BrandMapper
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        //4.开始索引
+        int begin=(currentPage-1)*pageSize;
+        //计算查询条目数
+        int size=pageSize;
+        //处理brand条件，模糊表达式
+        String brandName=brand.getBrandName();
+        if(brandName !=null && brandName.length()>0){
+            brand.setBrandName("%"+brandName+"%");
+        }
+        String companyName=brand.getCompanyName();
+        if(companyName !=null && companyName.length()>0){
+            brand.setCompanyName("%"+companyName+"%");
+        }
+
+        //查询当前也数据
+        List<Brand> rows=mapper.selectByPageAndCondition(begin,size,brand);
+        //查询总记录数
+        int totalCount= mapper.selectTotalCountByCondition(brand);
+
+        PageBean<Brand> pageBean=new PageBean<>();
+        pageBean.setRows(rows);
+        pageBean.setTotalCount(totalCount);
+
+        //5. 释放资源
+        sqlSession.close();
+
+        return pageBean;
     }
 }

@@ -1,6 +1,7 @@
 package com.gyh.service;
 
 import com.gyh.pojo.Brand;
+import com.gyh.pojo.PageBean;
 
 import java.util.List;
 
@@ -31,4 +32,15 @@ public interface BrandService {
     void delete(int id);
 
     void deleteByIds(int[] ids);
+
+    /*
+    * 分页查询
+    * */
+    PageBean<Brand> selectByPage(int currentPage,int pageSize);
+
+
+    /*
+    * 分页条件查询
+    * */
+    PageBean<Brand> selectByPageAndCondition(int currentPage,int pageSize,Brand brand);
 }
